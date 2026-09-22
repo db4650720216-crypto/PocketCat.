@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.PocketCat">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".CatDreamService"
+            android:exported="true"
+            android:label="@string/screensaver_name"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.dream"
+                android:resource="@xml/dream" />
+        </service>
+
+        <service
+            android:name=".CatWallpaperService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/wallpaper" />
+        </service>
+    </application>
+</manifest>
