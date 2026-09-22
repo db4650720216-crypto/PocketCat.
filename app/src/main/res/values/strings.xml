@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pocket Cat</string>
+    <string name="wallpaper_description">A tiny interactive cat that lives on your home screen.</string>
+    <string name="screensaver_name">Pocket Cat Room</string>
+</resources>
