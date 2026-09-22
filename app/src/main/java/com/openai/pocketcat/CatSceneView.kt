@@ -11,7 +11,7 @@ class CatSceneView(
     private val showHud: Boolean = true
 ) : View(context) {
     private val brain = CatBrain((System.currentTimeMillis() and 0x7fffffff).toInt())
-    private val painter = CatPainter()
+    private val painter = CatPainter(context.applicationContext)
     private var running = false
     private var lastFrame = 0L
     private var draggingToy = false
@@ -27,20 +27,20 @@ class CatSceneView(
             lastFrame = now
             brain.update(dt)
             invalidate()
-            postOnAnimation(this)
+            postDelayed(this, 50L)
         }
     }
 
     init {
         isClickable = true
-        contentDescription = "Interactive orange cat. Tap the cat to pet it, or drag anywhere to move a toy."
+        contentDescription = "Realistic interactive ginger cat. Tap to pet, or drag to play."
     }
 
     fun start() {
         if (running) return
         running = true
         lastFrame = SystemClock.uptimeMillis()
-        postOnAnimation(frame)
+        post(frame)
     }
 
     fun stop() {
