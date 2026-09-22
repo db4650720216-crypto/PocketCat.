@@ -14,7 +14,7 @@ class CatWallpaperService : WallpaperService() {
     private inner class CatEngine : Engine() {
         private val handler = Handler(Looper.getMainLooper())
         private val brain = CatBrain((System.currentTimeMillis() and 0x7fffffff).toInt())
-        private val painter = CatPainter()
+        private val painter = CatPainter(applicationContext)
         private var visible = false
         private var lastFrame = 0L
         private var activeUntil = 0L
@@ -27,8 +27,7 @@ class CatWallpaperService : WallpaperService() {
                 lastFrame = now
                 brain.update(dt)
                 drawFrame()
-                val delay = if (now < activeUntil) 33L else 100L
-                handler.postDelayed(this, delay)
+                handler.postDelayed(this, if (now < activeUntil) 33L else 120L)
             }
         }
 
@@ -44,6 +43,14 @@ class CatWallpaperService : WallpaperService() {
                 lastFrame = SystemClock.uptimeMillis()
                 drawTask.run()
             }
+        }
+
+        override fun onOffsetsChanged(
+            xOffset: Float, yOffset: Float, xOffsetStep: Float, yOffsetStep: Float,
+            xPixelOffset: Int, yPixelOffset: Int
+        ) {
+            painter.setPageOffset(xOffset)
+            if (visible) drawFrame()
         }
 
         override fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -68,7 +75,7 @@ class CatWallpaperService : WallpaperService() {
             val h = frame.height().coerceAtLeast(1)
             val nx = (event.x / w).coerceIn(0f, 1f)
             val ny = (event.y / h).coerceIn(0f, 1f)
-            activeUntil = SystemClock.uptimeMillis() + 2500L
+            activeUntil = SystemClock.uptimeMillis() + 3000L
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     brain.wake()
